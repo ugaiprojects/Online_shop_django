@@ -1,0 +1,57 @@
+{% extends 'catalog/base.html' %}
+{% load crispy_forms_tags %}
+{% block content %}
+
+<div class="container text-center">
+    <form method="POST" action="" class="row gx-5" enctype="multipart/form-data">
+        <div class="col-6 text-start">
+            <div class="card gy-5 ">
+                <div class="card-header">
+                    <h4 class="my-0 font-weight-normal text-center">
+                        {% if object %}
+                        Изменить товар
+                        {% else %}
+                        Создать новый товар
+                        {% endif %}
+                    </h4>
+                </div>
+                <div class="card-body">
+                    {% csrf_token %}
+<!--                    {{ form.as_p }}-->
+                    {{ form|crispy }}
+                    <button class="btn btn-dark w-100" type="submit">
+                        {% if object %}
+                        Сохранить
+                        {% else %}
+                        Создать
+                        {% endif %}
+                    </button>
+                </div>
+            </div>
+        </div>
+        <div class="col-5 text-start">
+            <div class="card gy-5 ">
+                <div class="card-header">
+                    <h6 class="my-0 font-weight-normal text-center">
+                        Версии товара
+                    </h6>
+                    <h4 class="my-0 font-weight-normal text-center">
+                        {{ object.title }}
+                    </h4>
+                </div>
+                <div class="card-body">
+                    {{ formset.management_form }}
+                    {% for form in formset.forms %}
+<!--                    {{ form.as_p }}-->
+                    {{ form|crispy}}
+                    {{ form.errors }}
+                     {% if not forloop.last %}
+                    <hr>
+                    {% endif %}
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </form>
+    {% endblock %}
+</div>
